@@ -10,7 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: تحميل المشروع
+        uses: actions/checkout@v4
 
-      - name: Build with Buildozer
-        uses: ArtemAnokhin/buildozer-action@v1
+      - name: تثبيت Buildozer
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip build-essential git
+          pip3 install buildozer
+
+      - name: بناء APK
+        run: |
+          buildozer android debug
