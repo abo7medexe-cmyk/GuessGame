@@ -17,6 +17,7 @@ android.ndk = 25.2.9519653
 android.accept_sdk_license = True
 android.archs = arm64-v8a, armeabi-v7a
 
-[buildozer]
+YES | buildozer android debug
+
 log_level = 2
 warn_on_root = 1
