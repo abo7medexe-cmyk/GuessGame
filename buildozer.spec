@@ -5,19 +5,17 @@ package.domain = org.abo7medexe
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,ttf
 version = 0.1
-
-# المكاتب المطلوبة لتشغيل مشروعك
-requirements = python3,kivy,pillow
+requirements = python3,kivy
 
 orientation = portrait
 fullscreen = 0
 
-# إعدادات الأندرويد الأساسية والسيرفر
-android.archs = arm64-v8a, armeabi-v7a
-android.accept_sdk_license = True
+# تحديد الأرقام المناسبة لمنع التحميل اللانهائي
 android.api = 33
 android.minapi = 21
-android.ndk_api = 21
+android.ndk = 25.2.9519653
+android.accept_sdk_license = True
+android.archs = arm64-v8a, armeabi-v7a
 
 [buildozer]
 log_level = 2
