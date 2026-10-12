@@ -7,19 +7,38 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: تحميل المشروع
         uses: actions/checkout@v4
 
-      - name: تثبيت Buildozer
+      - name: إعداد بيئة جافا (مهمة للأندرويد)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: تثبيت الاعتمادات والكومبيلر
         run: |
           sudo apt update
-          sudo apt install -y python3-pip build-essential git
-          pip3 install buildozer
+          sudo apt install -y python3-pip build-essential git ccache lld libffi-dev libssl-dev autoconf automake libtool pkg-config zlib1g-dev libgmp3-dev libmpfr-dev libmpc-dev
+          pip3 install --upgrade pip
+          pip3 install buildozer cython virtualenv
+
+      - name: قبول تراخيص Android SDK تلقائياً
+        run: |
+          if [ -f buildozer.spec ]; then
+            sed -i.bak "s/# android.accept_sdk_license = False/android.accept_sdk_license = True/" buildozer.spec
+          fi
 
       - name: بناء APK
         run: |
           buildozer android debug
+
+      - name: رفع ملف الـ APK الناتج
+        uses: actions/upload-artifact@v4
+        with:
+          name: GuessGame-APK
+          path: bin/*.apk
           
