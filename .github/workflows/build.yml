@@ -1,10 +1,9 @@
-name: Build Android APK
+name: Build APK
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -14,25 +13,13 @@ jobs:
       - name: تحميل المشروع
         uses: actions/checkout@v4
 
-      - name: تثبيت الكومبيلر والاعتمادات
+      - name: تثبيت Buildozer
         run: |
           sudo apt update
-          sudo apt install -y python3-pip build-essential git ccache lld libffi-dev libssl-dev
-          pip3 install --upgrade pip
-          pip3 install buildozer cython
-
-      - name: قبول تراخيص Android SDK
-        run: |
-          if [ -f buildozer.spec ]; then
-            sed -i.bak "s/# android.accept_sdk_license = False/android.accept_sdk_license = True/" buildozer.spec
-          fi
+          sudo apt install -y python3-pip build-essential git
+          pip3 install buildozer
 
       - name: بناء APK
         run: |
           buildozer android debug
-
-      - name: رفع ملف الـ APK الناتج
-        uses: actions/upload-artifact@v4
-        with:
-          name: Guessing-Game-APK
-          path: bin/*.apk
+          
